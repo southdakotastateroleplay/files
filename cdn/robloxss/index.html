@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Sorting</title>
+    <style>
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
+        .image-item {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Sorting</h1>
+    <button onclick="sortImages()">Sort Images</button>
+    <div class="image-container" id="image-container"></div>
+
+    <script>
+        function fetchImages() {
+            // Replace 'images' with the path to your image folder
+            fetch('images')
+                .then(response => response.text())
+                .then(data => {
+                    const imageContainer = document.getElementById('image-container');
+                    imageContainer.innerHTML = data;
+                });
+        }
+
+        function sortImages() {
+            const imageContainer = document.getElementById('image-container');
+            const imageItems = Array.from(imageContainer.children);
+
+            imageItems.sort((a, b) => {
+                const srcA = a.querySelector('img').getAttribute('src');
+                const srcB = b.querySelector('img').getAttribute('src');
+                return srcA.localeCompare(srcB);
+            });
+
+            imageContainer.innerHTML = '';
+            imageItems.forEach(item => imageContainer.appendChild(item));
+        }
+
+        window.onload = fetchImages;
+    </script>
+</body>
+</html>
